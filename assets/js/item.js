@@ -3,11 +3,11 @@ const itemName = document.querySelector(".home-items__title");
 const itemPrice = document.querySelector(".home-items__price");
 
 
+let objGetLocal = JSON.parse(localStorage.getItem("itemObj"))
 
-let src = localStorage.getItem("imgSrc");
-let name = localStorage.getItem("name");
-let price = localStorage.getItem("price");
-
+let src = objGetLocal.imgSrcLoc;
+let name = objGetLocal.imgNameLoc;
+let price = objGetLocal.itemsPriceLoc;
 
 itemImage.src = src;
 itemName.innerHTML = name;
