@@ -6,23 +6,19 @@ document.addEventListener("DOMContentLoaded", function (event) {
     preloader.remove();
     setTimeout(() => {
         anime({
-            targets: '.svg__foton .polymorph',
-            points: [
-              { value: [
-                '70 24 119.574 60.369 100.145 117.631 50.855 101.631 3.426 54.369',
-                '70 41 118.574 59.369 111.145 132.631 60.855 84.631 20.426 60.369']
-              },
-              { value: '70 6 119.574 60.369 100.145 117.631 39.855 117.631 55.426 68.369' },
-              { value: '70 57 136.574 54.369 89.145 100.631 28.855 132.631 38.426 64.369' },
-              { value: '70 24 119.574 60.369 100.145 117.631 50.855 101.631 3.426 54.369' }
-            ],
-            easing: 'easeOutQuad',
-            duration: 2000,
+            targets: '.svg__basket .lines path',
+            strokeDashoffset: [anime.setDashoffset, 0],
+            easing: 'easeInOutSine',
+            duration: 1500,
+            delay: function (el, i) { return i * 250 },
+            direction: 'alternate',
             loop: true
-          });
+        });
     }, 100);
 });
 
+
+let arrId = [];
 fetch("assets/js/data.json")
     .then(response => response.json())
     .then(arrItems => {
@@ -35,11 +31,11 @@ fetch("assets/js/data.json")
                 price[i].innerHTML = arrItems[i].price;
                 images[i].src = arrItems[i].image;
                 images[i].alt = arrItems[i].name;
+                arrId.push(arrItems[i].id)
             }
         }
     }
     );
-
 
 
 let image = document.querySelectorAll(".home__item_image");
@@ -54,8 +50,89 @@ for (let i = 0; i < image.length; i++) {
         let objForLocal = {
             imgSrcLoc: imgSrc,
             imgNameLoc: imgName,
-            itemsPriceLoc: imgPrice
+            itemsPriceLoc: imgPrice,
+            itemsIdLoc: arrId[i]
         }
         localStorage.setItem("itemObj", JSON.stringify(objForLocal))
     })
 }
+
+
+
+// basket ------------------------
+
+
+
+function create(what, where, className) {
+    const elem = document.createElement(what);
+    elem.setAttribute("class", className);
+    where.append(elem);
+    return elem;
+}
+
+
+
+const iconBask = document.querySelector(".header__basket");
+const modalBask = document.querySelector(".basket__modal");
+const basketModalCont = document.querySelector(".basket__modal_cont");
+
+
+
+iconBask.addEventListener("click", (e) => {
+    e.stopPropagation();
+    modalBask.style.display = "flex";
+
+    if (JSON.parse(localStorage.getItem("itemArr"))) {
+        for (let i = 0; i < JSON.parse(localStorage.getItem("itemArr")).length; i++) {
+            const basketItem = create("div", basketModalCont, "basket__item");
+            const basketItemImg = create("div", basketItem, "basket__item_img");
+            const basketItemImage = create("img", basketItemImg, "basket__item_image");
+            basketItemImage.src = JSON.parse(localStorage.getItem("itemArr"))[i].basketItemLocalSrc;
+
+            const basketItemInfo = create("div", basketItem, "basket__item_info");
+            const basketItemTitle = create("h3", basketItemInfo, "home-items__title");
+            basketItemTitle.innerHTML = JSON.parse(localStorage.getItem("itemArr"))[i].basketItemLocalName;
+
+            const basketItemPrice = create("h3", basketItemInfo, "home-items__price");
+            basketItemPrice.innerHTML = JSON.parse(localStorage.getItem("itemArr"))[i].basketItemLocalPrice;
+
+            const basketItemsInput = create("input", basketItemInfo, "basket__item_info_inp");
+            basketItemsInput.value = 1;
+            basketItemsInput.setAttribute("type", "number");
+
+            const basketItemsClose = create("div", basketItem, "basket__item_close");
+            const basketItemsCloseIcon = create("i", basketItemsClose, "fas fa-times basket__item_close_icon");
+
+            basketItemsInput.addEventListener("input", (e) => {
+                if (e.target.value < 1) {
+                    e.target.value = 1;
+                }
+                basketItemPrice.innerHTML = JSON.parse(localStorage.getItem("itemArr"))[i].basketItemLocalPrice * e.target.value;
+            });
+
+            basketItemsCloseIcon.addEventListener("click", () => {
+                basketItem.remove()
+                // console.log(JSON.parse(localStorage.getItem("itemArr"))[i])
+                // let newItemArr = JSON.parse(localStorage.getItem("itemArr"))
+
+                // delete newItemArr[i];
+
+                // localStorage.setItem("itemArr", JSON.stringify(newItemArr))
+            })
+        }
+    }
+
+
+
+
+
+
+
+
+})
+basketModalCont.addEventListener("click", (e) => {
+    e.stopPropagation()
+})
+document.addEventListener("click", () => {
+    modalBask.style.display = "none";
+})

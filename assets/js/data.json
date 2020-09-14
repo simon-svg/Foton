@@ -2,31 +2,37 @@
     {
         "name": "gold ring",
         "price": "15",
-        "image": "assets/media/img/1.jpg"
+        "image": "assets/media/img/1.jpg",
+        "id": 1
     },
     {
         "name": "just ring",
         "price": "30",
-        "image": "assets/media/img/2.jpg"
+        "image": "assets/media/img/2.jpg",
+        "id": 2
     },
     {
         "name": "petite ring",
         "price": "20",
-        "image": "assets/media/img/3.jpg"
+        "image": "assets/media/img/3.jpg",
+        "id": 3
     },
     {
         "name": "blush ring",
         "price": "27",
-        "image": "assets/media/img/4.jpg"
+        "image": "assets/media/img/4.jpg",
+        "id": 4
     },
     {
         "name": "glamira ring",
         "price": "42",
-        "image": "assets/media/img/5.jpg"
+        "image": "assets/media/img/5.jpg",
+        "id": 5
     },
     {
         "name": "attract ring",
         "price": "14",
-        "image": "assets/media/img/6.jpg"
+        "image": "assets/media/img/6.jpg",
+        "id": 6
     }
 ]
