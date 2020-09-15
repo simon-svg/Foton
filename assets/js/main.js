@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     preloader.remove();
     setTimeout(() => {
         anime({
-            targets: '.svg__basket .lines path',
+            targets: '.svg__foton .lines path',
             strokeDashoffset: [anime.setDashoffset, 0],
             easing: 'easeInOutSine',
             duration: 1500,
@@ -75,52 +75,74 @@ function create(what, where, className) {
 const iconBask = document.querySelector(".header__basket");
 const modalBask = document.querySelector(".basket__modal");
 const basketModalCont = document.querySelector(".basket__modal_cont");
-
+let totalPrice = document.querySelector(".basket__modal_totalPrice");
+let forAllPrice = 0;
+let allPrice = 0;
+let bool = true;
 
 
 iconBask.addEventListener("click", (e) => {
     e.stopPropagation();
     modalBask.style.display = "flex";
+    if (bool) {
+        if (JSON.parse(localStorage.getItem("itemArr"))) {
+            for (let i = 0; i < JSON.parse(localStorage.getItem("itemArr")).length; i++) {
+                const basketItem = create("div", basketModalCont, "basket__item");
+                basketItem.setAttribute("data-id", JSON.parse(localStorage.getItem("itemArr"))[i].basketItemLocalId)
+                basketItem.setAttribute("data-price", JSON.parse(localStorage.getItem("itemArr"))[i].basketItemLocalPrice)
 
-    if (JSON.parse(localStorage.getItem("itemArr"))) {
-        for (let i = 0; i < JSON.parse(localStorage.getItem("itemArr")).length; i++) {
-            const basketItem = create("div", basketModalCont, "basket__item");
-            const basketItemImg = create("div", basketItem, "basket__item_img");
-            const basketItemImage = create("img", basketItemImg, "basket__item_image");
-            basketItemImage.src = JSON.parse(localStorage.getItem("itemArr"))[i].basketItemLocalSrc;
+                const basketItemImg = create("div", basketItem, "basket__item_img");
+                const basketItemImage = create("img", basketItemImg, "basket__item_image");
+                basketItemImage.src = JSON.parse(localStorage.getItem("itemArr"))[i].basketItemLocalSrc;
 
-            const basketItemInfo = create("div", basketItem, "basket__item_info");
-            const basketItemTitle = create("h3", basketItemInfo, "home-items__title");
-            basketItemTitle.innerHTML = JSON.parse(localStorage.getItem("itemArr"))[i].basketItemLocalName;
+                const basketItemInfo = create("div", basketItem, "basket__item_info");
+                const basketItemTitle = create("h3", basketItemInfo, "home-items__title");
+                basketItemTitle.innerHTML = JSON.parse(localStorage.getItem("itemArr"))[i].basketItemLocalName;
 
-            const basketItemPrice = create("h3", basketItemInfo, "home-items__price");
-            basketItemPrice.innerHTML = JSON.parse(localStorage.getItem("itemArr"))[i].basketItemLocalPrice;
+                const basketItemPrice = create("h3", basketItemInfo, "home-items__price");
+                basketItemPrice.innerHTML = JSON.parse(localStorage.getItem("itemArr"))[i].basketItemLocalPrice;
 
-            const basketItemsInput = create("input", basketItemInfo, "basket__item_info_inp");
-            basketItemsInput.value = 1;
-            basketItemsInput.setAttribute("type", "number");
+                const basketItemsInput = create("input", basketItemInfo, "basket__item_info_inp");
+                basketItemsInput.value = 1;
+                basketItemsInput.setAttribute("type", "number");
 
-            const basketItemsClose = create("div", basketItem, "basket__item_close");
-            const basketItemsCloseIcon = create("i", basketItemsClose, "fas fa-times basket__item_close_icon");
+                const basketItemsClose = create("div", basketItem, "basket__item_close");
+                const basketItemsCloseIcon = create("i", basketItemsClose, "fas fa-times basket__item_close_icon");
 
-            basketItemsInput.addEventListener("input", (e) => {
-                if (e.target.value < 1) {
-                    e.target.value = 1;
-                }
-                basketItemPrice.innerHTML = JSON.parse(localStorage.getItem("itemArr"))[i].basketItemLocalPrice * e.target.value;
-            });
 
-            basketItemsCloseIcon.addEventListener("click", () => {
-                basketItem.remove()
-                // console.log(JSON.parse(localStorage.getItem("itemArr"))[i])
-                // let newItemArr = JSON.parse(localStorage.getItem("itemArr"))
 
-                // delete newItemArr[i];
+                basketItemsInput.addEventListener("input", (e) => {
+                    if (e.target.value < 1) {
+                        e.target.value = 1;
+                    }
+                    basketItemPrice.innerHTML = JSON.parse(localStorage.getItem("itemArr"))[i].basketItemLocalPrice * e.target.value;
+                });
 
-                // localStorage.setItem("itemArr", JSON.stringify(newItemArr))
-            })
+                forAllPrice = +JSON.parse(localStorage.getItem("itemArr"))[i].basketItemLocalPrice;
+                allPrice += forAllPrice;
+
+                basketItemsCloseIcon.addEventListener("click", function (e) {
+                    const parentItem = this.parentElement.parentElement.getAttribute("data-id");
+                    let parentPrice = this.parentElement.parentElement.getAttribute("data-price")
+                    let newLocalArr = JSON.parse(localStorage.getItem("itemArr"))
+                    let filterArr = newLocalArr.filter(item => item.basketItemLocalId !== +parentItem)
+
+                    localStorage.setItem("itemArr", JSON.stringify(filterArr));
+
+
+
+                    allPrice -= parentPrice;
+                    totalPrice.innerHTML = allPrice
+
+
+                    basketItem.remove()
+                })
+            }
         }
+        bool = false;
     }
+    totalPrice.innerHTML = allPrice
+
 
 
 

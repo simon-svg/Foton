@@ -108,11 +108,27 @@ header
     justify-content: center;
     align-items: center;
 }
+.basket__modal_rel{
+    position: relative;
+}
 .basket__modal_cont{
+    padding-top: 20px;
     width: 600px;
     height: 400px;
     background-color: white;
     overflow-y: scroll;
+}
+.basket__modal_totalPrice{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.basket__modal_totalPrice::after{
+    position: absolute;
+    content: "$";
+    left: -10px;
+    top: 0;
 }
 .basket__item{
     position: relative;
