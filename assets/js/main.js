@@ -4,17 +4,15 @@ const preloader = document.querySelector(".preloader");
 document.addEventListener("DOMContentLoaded", function (event) {
     body.style["overflow-y"] = "scroll";
     preloader.remove();
-    setTimeout(() => {
-        anime({
-            targets: '.svg__foton .lines path',
-            strokeDashoffset: [anime.setDashoffset, 0],
-            easing: 'easeInOutSine',
-            duration: 1500,
-            delay: function (el, i) { return i * 250 },
-            direction: 'alternate',
-            loop: true
-        });
-    }, 100);
+    anime({
+        targets: '.svg__foton path',
+        strokeDashoffset: [anime.setDashoffset, 0],
+        easing: 'easeInOutSine',
+        duration: 1500,
+        delay: function (el, i) { return i * 250 },
+        direction: 'alternate',
+        loop: true
+    });
 });
 
 
@@ -142,19 +140,29 @@ iconBask.addEventListener("click", (e) => {
         bool = false;
     }
     totalPrice.innerHTML = allPrice
-
-
-
-
-
-
-
-
-
+    
 })
+
+// burger-menu
+const burgerMenu = document.querySelector(".burger-menu");
+const headerMob = document.querySelector(".header-mob");
+let headerMobBool = true;
+
+burgerMenu.addEventListener("click", (e) => {
+    e.stopPropagation();
+    headerMob.style.display = headerMobBool ? "flex" : "none";
+    headerMobBool = !headerMobBool;
+})
+
+
+
+
+
 basketModalCont.addEventListener("click", (e) => {
     e.stopPropagation()
 })
 document.addEventListener("click", () => {
     modalBask.style.display = "none";
+    headerMob.style.display = "none";
+    headerMobBool = true;
 })

@@ -1,0 +1,48 @@
+@media screen and (max-width: 1300px) {
+    .header__basket{
+        right: 10px;
+    }
+}
+@media screen and (max-width: 1180px) {
+    .wrapper{
+        width: 95%;
+    }
+    .header__cont {
+        width: calc(100% - 50px);
+    }
+    .header__nav{
+        display: none;
+    }
+    .burger-menu{
+        display: flex;
+        width: 30px;
+        height: 20px;
+    }
+}
+@media screen and (max-width: 800px) {
+    .home__cont_item{
+        width: 47%;
+    }
+}
+@media screen and (max-width: 500px) {
+    .logo__svg{
+        margin: 100px 0 50px 0;
+    }
+    .svg__foton{
+        width: 150px;
+    }
+    .item__main {
+        min-height: calc(100vh - 160px);
+    }
+}
+@media screen and (max-width: 400px) {
+    .home__item_title,
+    .home__item_subtitle{
+        font-size: 12px;
+    }
+    .home__item_price,
+    .home-items__price {
+        margin: 5px 10px 0 0;
+        font-size: 12px;
+    }
+}
